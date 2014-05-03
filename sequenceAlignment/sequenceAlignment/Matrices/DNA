@@ -1,0 +1,7 @@
+# Generated manually on 4-1-2014
+# Sequence identity matrix for DNA
+   A  G  T  C 
+A  1  0  0  0 
+G  0  1  0  0 
+T  0  0  1  0 
+C  0  0  0  1 
