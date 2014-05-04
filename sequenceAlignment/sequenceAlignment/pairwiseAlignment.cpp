@@ -49,19 +49,17 @@ void pairwiseAlignment::print(){
 
 void pairwiseAlignment::save(){
 	std::ofstream outFile("output.txt");
-	outFile << this->_algnTemplate.getName() << std::endl << this->_algnTemplate.getSequence() << std::endl
-		<< this->_algnQuery.getName() << std::endl << this->_algnQuery.getSequence() << std::endl;
+	pairwiseAlignment::save(outFile);
 }
 
-void pairwiseAlignment::save(std::ofstream outFile){
+void pairwiseAlignment::save(std::ofstream &outFile){
 	outFile << this->_algnTemplate.getName() << std::endl << this->_algnTemplate.getSequence() << std::endl
 		<< this->_algnQuery.getName() << std::endl << this->_algnQuery.getSequence() << std::endl;
 }
 
 void pairwiseAlignment::save(std::string outFileStr){
 	std::ofstream outFile(outFileStr);
-	outFile << this->_algnTemplate.getName() << std::endl << this->_algnTemplate.getSequence() << std::endl
-		<< this->_algnQuery.getName() << std::endl << this->_algnQuery.getSequence() << std::endl;
+	pairwiseAlignment::save(outFile);
 }
 
 //Caveat: Not well tested yet

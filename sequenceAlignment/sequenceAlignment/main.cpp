@@ -13,10 +13,19 @@
 
 #define TEST true
 
+enum saErrors{errNoArguments=-1};
+
 //_tmain() is required for getopt to function correctly
 int _tmain(int argc, TCHAR** argv)
 {
-	getopter opts = getopter(argc, argv);
+	if (argc > 1){
+		getopter opts = getopter(argc, argv);
+	}
+	else{
+		std::cout << "Error: No arguments given" << std::endl;
+		return errNoArguments;
+	}
+	
 	
 	//Put testing stuff here
 	if (TEST){

@@ -55,7 +55,7 @@ public:
 	void print();
 	//Save the sequence alignment to a file
 	void save();
-	void save(std::ofstream outFile);
+	void save(std::ofstream &outFile);
 	void save(std::string outFileStr);
 	~pairwiseAlignment();
 };
