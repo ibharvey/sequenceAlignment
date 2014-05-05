@@ -6,9 +6,10 @@ getopter::getopter(){}
 getopter::getopter(int argc, TCHAR* argv[])
 {
 	//Initialize
-	_makePairs = 0;
+	this->_makePairs = 0;
 	this->_verboseFlag = 0;
 	this->_quietFlag = 0;
+	this->_msaId = "";
 	//Iterate through command line arguments
 	while (1){
 		static struct option longOptions[]=
@@ -22,7 +23,7 @@ getopter::getopter(int argc, TCHAR* argv[])
 			{ _T("verbose"),	ARG_NONE, &this->_verboseFlag, 1 },
 			{ _T("quiet"),		ARG_NONE, &this->_quietFlag, 1 },
 			/*Pairwise alignment:
-				Either need an input file or 2+ _sequences
+				Iterate through and align all pairs of sequences
 			*/
 			{ _T("pair"),		ARG_NONE, &this->_makePairs, 1 },
 			{ _T("pairwise"),	ARG_NONE, &this->_makePairs, 1 },
@@ -46,13 +47,14 @@ getopter::getopter(int argc, TCHAR* argv[])
 			
 			//IO information
 			{ _T("input"),		ARG_REQ, 0, _T('i') },
-			{ _T("output"),		ARG_REQ, 0, _T('o') },	//Default: FASTA
+			{ _T("output"),		ARG_REQ, 0, _T('o') },
+			{ _T("format"),		ARG_REQ, 0, _T('f') }, //Default is FASTA
 			//Last line of longOptions
 			{ARG_NULL , ARG_NULL , ARG_NULL , ARG_NULL}
 		};
 
 		int optionIndex = 0;
-		this->_c = getopt_long(argc, argv, _T("b:a:r:qvpm:i:o:x:"), longOptions, &optionIndex);
+		this->_c = getopt_long(argc, argv, _T("b:a:r:qvpm:i:o:x:f:"), longOptions, &optionIndex);
 
 		//Check for end of operation or error
 		if (this->_c == -1) break;

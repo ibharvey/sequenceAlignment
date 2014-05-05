@@ -21,6 +21,7 @@ void msa::star() {
 	//I've decided to implement the map object using std::string-keys to reduce redundancy
 	std::map<std::string, std::vector<sequence>> allPairs;
 	for (int i = 1; i < _seqs.size(); i++){
+		std::cout << "Aligning sequence " << i+1 << " out of " << _seqs.size() << "." << std::endl;
 		pairwiseAlignment temp = pairwiseAlignment(_seqs[0], _seqs[i], _matr);
 		temp.slowAlign();
 		allPairs[temp.getTemplate().getSequence()].push_back(sequence(_seqs[i].getName(),temp.getQuery().getSequence()));

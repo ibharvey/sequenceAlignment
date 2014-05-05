@@ -34,6 +34,7 @@ private:
 	int _c;
 	int _verboseFlag;
 	int _quietFlag;
+	//Perform all possible pairwise alignments
 	int _makePairs;
 	//The type of MSA to use (eg "star")
 	std::string _msaId;
@@ -59,6 +60,8 @@ public:
 	gapPenalty getRegPenalty() const { return this->_regPenalty; }
 	gapPenalty getPostPenalty() const { return this->_postPenalty; }
 	std::vector<sequence>getSequences()const{ return this->_sequences; }
+	sequence getASequence(size_t index)const{ return this->_sequences[index]; }
+	int iteratePairs()const{ return this->_makePairs; }
 	getopter::getopter(int argc, TCHAR* argv[]);
 	~getopter();
 };

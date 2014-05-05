@@ -92,13 +92,13 @@ void pairwiseAlignment::slowAlign(){
 	std::vector<std::vector<full::node>> allNodes = vectorNodes();
 	this->relateNodes(allNodes);
 	std::pair<std::string, std::string> pairAlign = this->recurAlign(allNodes[_template.length() + 1][_query.length() + 1]);
-	_algnTemplate.setSequence(pairAlign.first);
-	_algnQuery.setSequence(pairAlign.second);
+	_algnQuery.setSequence(pairAlign.first);
+	_algnTemplate.setSequence(pairAlign.second);
 }
 
 //When calling this function, use the last node in the table to find the best alignment
 std::pair<std::string, std::string> pairwiseAlignment::recurAlign(full::node aNode){
-	if (aNode.parent->horizontalIndex() == -1 && aNode.parent->verticalIndex() == -1){
+	if (aNode.horizontalIndex() == -1 && aNode.verticalIndex() == -1){
 		return std::make_pair(std::string(), std::string());
 	}
 	else{
