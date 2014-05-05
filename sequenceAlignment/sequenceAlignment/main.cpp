@@ -37,7 +37,7 @@ int _tmain(int argc, TCHAR** argv)
 		gapPenalty regPenalties = gapPenalty(-.3, -.2, -1.1, -1.2);
 		gapPenalty prePenalties = gapPenalty(0, -14.2, 0, -3.9);
 		gapPenalty postPenalties = gapPenalty(0, 0, 0, 0);
-		pairwiseAlignment compareTwo = pairwiseAlignment(opts.getSequences()[0], opts.getSequences()[1], opts.getMatrix(), opts.getPrePenalty(), opts.getRegPenalty(), opts.getPostPenalty());
+		pairwiseAlignment compareTwo = pairwiseAlignment(opts.getASequence(0), opts.getASequence(1), opts.getMatrix(), opts.getPrePenalty(), opts.getRegPenalty(), opts.getPostPenalty());
 		compareTwo.slowAlign();
 		compareTwo.save();
 	}

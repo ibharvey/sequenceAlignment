@@ -61,7 +61,7 @@ void substitutionMatrix::clear(){
 }
 
 //load in a new substitution matrix
-void substitutionMatrix::load(std::string fileName){
+ptrdiff_t substitutionMatrix::load(std::string fileName){
 	this->clear();
 	//Try to find the substitution matrix file
 	std::ifstream inFile(fileName);
@@ -69,8 +69,14 @@ void substitutionMatrix::load(std::string fileName){
 		inFile.open("Matrices/" + fileName);
 	}
 	if (!inFile){
-		std::cerr << "Could not find specified matrix. Reminder: This is case-sensitive" << std::endl << "Defaulting to BLOSUM62" << std::endl;
 		inFile.open("Matrices/BLOSUM62");
+		if (!inFile){
+			std::cerr << "Error: Could not find " << fileName << " or the default Matrices/ directory. Terminating." << std::endl;
+			return -1;
+		}
+		else{
+			std::cerr << "Error: Could not find " << fileName << std::endl << "Reminder: This is case-sensitive" << std::endl << "Defaulting to BLOSUM62" << std::endl;
+		}
 	}
 	std::vector<std::string> lines;
 	while (!inFile.eof()){
@@ -92,9 +98,37 @@ void substitutionMatrix::load(std::string fileName){
 			this->_pairMatrix[std::make_pair(_alphabet[i], _alphabet[j])] = val;
 		}
 	}
+	return 0;
 }
 
-void substitutionMatrix::identity(std::vector<sequence>seqs, int amplitude){
+ptrdiff_t substitutionMatrix::save(std::string fileName){
+	//open file
+	std::ofstream outFile(fileName);
+	//put alphabet on first line
+	for (size_t i = 0; i <= this->_alphabet.size(); i++){
+		if (i == 0){
+			outFile << "  ";
+		}
+		else{
+			char temp = this->_alphabet[i - 1];
+			outFile << ' ' << (char)this->_alphabet[i-1] << ' ';
+		}
+
+	}
+	outFile << std::endl;
+	for (size_t i = 0; i < this->_alphabet.size(); i++){
+		outFile << this->_alphabet[i] << ' ';
+		for (size_t j = 0; j < (char)this->_alphabet.size(); j++){
+			size_t score = this->_pairMatrix[std::make_pair(this->_alphabet[i], this->_alphabet[j])];
+			if (score < 10)outFile << " ";
+			outFile << score << " ";
+		}
+		outFile << std::endl;
+	}
+	return 0;
+}
+
+void substitutionMatrix::identity(std::vector<sequence>seqs, ptrdiff_t match_val, ptrdiff_t mismatch_val){
 	//Get the alphabet for this identity matrix
 	for (unsigned int i = 0; i < seqs.size(); i++){
 		for (unsigned int j = 0; j < seqs[i].length(); j++){
@@ -109,10 +143,10 @@ void substitutionMatrix::identity(std::vector<sequence>seqs, int amplitude){
 	for (unsigned int i = 0; i < this->_alphabet.size(); i++){
 		for (unsigned int j = 0; j < this->_alphabet.size(); j++){
 			if (i == j){
-				this->_pairMatrix[std::make_pair(this->_alphabet[i], this->_alphabet[j])] = amplitude;
+				this->_pairMatrix[std::make_pair(this->_alphabet[i], this->_alphabet[j])] = match_val;
 			}
 			else{
-				this->_pairMatrix[std::make_pair(this->_alphabet[i], this->_alphabet[j])] = 0;
+				this->_pairMatrix[std::make_pair(this->_alphabet[i], this->_alphabet[j])] = mismatch_val;
 			}
 		}
 	}

@@ -170,27 +170,31 @@ getopter::getopter(int argc, TCHAR* argv[])
 	}
 	//If there is no substitution matrix try to default to DNA
 	else{
-		this->_matrix.load("Matrices/DNA");
-		if (this->_matrix.canScore(this->_sequences)){
-			std::cout << "No substitution matrix specified, using a DNA identity matrix." << std::endl;
-		}
-		else{
-			//If DNA doesn't work, try RNA
-			this->_matrix.load("Matrices/RNA");
+		if (this->_matrix.load("Matrices/DNA") == 0){
 			if (this->_matrix.canScore(this->_sequences)){
-				std::cout << "No substitution matrix specified, using an RNA identity matrix." << std::endl;
+				std::cout << "No substitution matrix specified, using a DNA identity matrix." << std::endl;
 			}
 			else{
-				//If not DNA or RNA, try standard protein
-				this->_matrix.load("Matrices/BLOSUM62");
-				if (this->_matrix.canScore(this->_sequences)){
-					std::cout << "No substitution matrix specified, using BLOSUM62. " << std::endl;
-				}
-				else{
-					std::cout << "Input contained non-standard characters, generating an identity matrix" << std::endl;
-					//This sequence is not standard DNA, RNA or protein
-					//Load an identity matrix for the sequences provided
-					this->_matrix.identity(this->_sequences);
+				//If DNA doesn't work, try RNA
+				if (this->_matrix.load("Matrices/RNA") == 0){
+					if (this->_matrix.canScore(this->_sequences)){
+						std::cout << "No substitution matrix specified, using an RNA identity matrix." << std::endl;
+					}
+					else{
+						//If not DNA or RNA, try standard protein
+						if (this->_matrix.load("Matrices/BLOSUM62") == 0){
+							if (this->_matrix.canScore(this->_sequences)){
+								std::cout << "No substitution matrix specified, using BLOSUM62. " << std::endl;
+							}
+							else{
+								std::cout << "Input contained non-standard characters, generating an identity matrix" << std::endl;
+								//This sequence is not standard DNA, RNA or protein
+								//Load an identity matrix for the sequences provided
+								this->_matrix.identity(this->_sequences);
+							}
+						}
+						
+					}
 				}
 			}
 		}
